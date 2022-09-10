@@ -10,15 +10,15 @@ Sub AllStocksAnalysisRefactored()
     Exit Sub
   End If
   startSS = Timer 'start timer
+  'Create array with all tickers and 3 output arrays with more efficient data types for avoiding Array() method
+  Dim tickers() As String, tickerVolumes(11) As Long, tickerStartingPrices(11) As Single, tickerEndingPrices(11) As Single
+  'Create a ticker Index, establish the number of rows to loop over
+  Dim tickerIndex As Byte, rowEnd As Integer, i As Integer
   'Format the output sheet on All Stocks Analysis worksheet
   Worksheets("All Stocks Analysis").Activate
   'Create a header row w/ Cells method
   Cells(1, 1) = "All Stocks (" + yearvalue + ")": Cells(3, 1) = "Ticker": Cells(3, 2) = "Total Daily Volume": Cells(3, 3) = "Return"
-  'Create array with all tickers and 3 output arrays with more efficient data types for avoiding Array method
-  Dim tickers() As String, tickerVolumes(11) As Long, tickerStartingPrices(11) As Single, tickerEndingPrices(11) As Single
   tickers = Split("AY,CSIQ,DQ,ENPH,FSLR,HASI,JKS,RUN,SEDG,SPWR,TERP,VSLR", ",")
-  'Create a ticker Index, establish the number of rows to loop over
-  Dim tickerIndex As Byte, rowEnd As Integer, i As Integer
   Worksheets(yearvalue).Activate: rowEnd = Cells(Rows.Count, 1).End(xlUp).Row 'last non-empty row
 '  Dim initializes each empty value to empty or 0 before we use it
 '  For i = 1 To 11
@@ -29,7 +29,6 @@ Sub AllStocksAnalysisRefactored()
     tickerStartingPrices(0) = Cells(2, 6): tickerVolumes(0) = Cells(2, 8)
   End If
   For tickerIndex = 0 To UBound(tickers)
-''  Do While tickerIndex <= UBound(tickers)
   'Create a for loop to initialize the tickerVolumes to zero (unnecessary)
   'Loop over all the rows in the spreadsheet
     For i = 3 To (rowEnd - 1)
@@ -48,8 +47,6 @@ Sub AllStocksAnalysisRefactored()
       End If
 nextI:
     Next i
-''    tickerIndex = tickerIndex + 1
-''  Loop
   Next tickerIndex
   'Reduce number of loops
   If Cells(rowEnd, 1) = tickers(UBound(tickers)) Then
@@ -57,16 +54,17 @@ nextI:
   End If
   'Output results to a table and format it
   Worksheets("All Stocks Analysis").Activate: tickerIndex = 0
-  Do While tickerIndex <= UBound(tickers)
-    Cells(4 + tickerIndex, 1) = tickers(tickerIndex): Cells(4 + tickerIndex, 2) = tickerVolumes(tickerIndex): Cells(4 + tickerIndex, 3) = (tickerEndingPrices(tickerIndex) / tickerStartingPrices(tickerIndex)) - 1
-    tickerIndex = tickerIndex + 1
-  Loop
+  For tickerIndex = 0 To UBound(tickers)
+    Cells(4 + tickerIndex, 1) = tickers(tickerIndex): Cells(4 + tickerIndex, 2) = tickerVolumes(tickerIndex)
+    Cells(4 + tickerIndex, 3) = (tickerEndingPrices(tickerIndex) / tickerStartingPrices(tickerIndex)) - 1
+  Next tickerIndex
   'Formatting
   Cells(1, 1).Font.Bold = True
   With Range(Cells(3, 1), Cells(3, 3))
     .Font.Bold = True: .Borders(xlEdgeBottom).LineStyle = xlContinuous
   End With
-  Range(Cells(4, 2), Cells(15, 2)).NumberFormat = "#,##0": Range(Cells(4, 3), Cells(15, 3)).NumberFormat = "0.0%": rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
+  Range(Cells(4, 2), Cells(15, 2)).NumberFormat = "#,##0": Columns(2).AutoFit
+  Range(Cells(4, 3), Cells(15, 3)).NumberFormat = "0.0%": rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
   For i = 4 To rowEnd
     If Cells(i, 3) > 0 Then
       Cells(i, 3).Interior.Color = vbGreen 'Color the cell green
@@ -87,7 +85,10 @@ Sub AllStocksAnalysisRefactoredNoComment()
   If yearvalue = vbNullString Then
     Exit Sub
   End If
-  startSS = Timer: Worksheets("All Stocks Analysis").Activate: Cells(1, 1) = "All Stocks (" + yearvalue + ")": Cells(3, 1) = "Ticker": Cells(3, 2) = "Total Daily Volume": Cells(3, 3) = "Return": Dim tickers() As String, tickerVolumes(11) As Long, tickerStartingPrices(11) As Single, tickerEndingPrices(11) As Single: tickers = Split("AY,CSIQ,DQ,ENPH,FSLR,HASI,JKS,RUN,SEDG,SPWR,TERP,VSLR", ","): Dim tickerIndex As Byte, rowEnd As Integer, i As Integer: Worksheets(yearvalue).Activate: rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
+  startSS = Timer
+  Dim tickers() As String, tickerVolumes(11) As Long, tickerStartingPrices(11) As Single, tickerEndingPrices(11) As Single: Dim tickerIndex As Byte, rowEnd As Integer, i As Integer
+  Worksheets("All Stocks Analysis").Activate: Cells(1, 1) = "All Stocks (" + yearvalue + ")": Cells(3, 1) = "Ticker": Cells(3, 2) = "Total Daily Volume": Cells(3, 3) = "Return"
+  tickers = Split("AY,CSIQ,DQ,ENPH,FSLR,HASI,JKS,RUN,SEDG,SPWR,TERP,VSLR", ","): Worksheets(yearvalue).Activate: rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
   If Cells(2, 1) = tickers(0) Then
     tickerStartingPrices(0) = Cells(2, 6): tickerVolumes(0) = Cells(2, 8)
   End If
@@ -119,7 +120,7 @@ nextI:
   With Range(Cells(3, 1), Cells(3, 3))
     .Font.Bold = True: .Borders(xlEdgeBottom).LineStyle = xlContinuous
   End With
-  Range(Cells(4, 2), Cells(15, 2)).NumberFormat = "#,##0": Range(Cells(4, 3), Cells(15, 3)).NumberFormat = "0.0%": rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
+  Range(Cells(4, 2), Cells(15, 2)).NumberFormat = "#,##0": Columns(2).AutoFit: Range(Cells(4, 3), Cells(15, 3)).NumberFormat = "0.0%": rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
   For i = 4 To rowEnd
     If Cells(i, 3) > 0 Then
       Cells(i, 3).Interior.Color = vbGreen
@@ -147,12 +148,12 @@ Sub AllStocksAnalysis()
   'Create a header row w/ Range method
   Range("A1").Value = "All Stocks (" + yearvalue + ")"
   Range("A" & 3).Value = "Ticker"
-  Range("B" & 3).Value = "Total Daily Volume" ': Columns("B").AutoFit
+  Range("B" & 3).Value = "Total Daily Volume" ': Columns(2).AutoFit
   Range("C" & 3).Value = "Return"
 '  'Create a header row w/ Cells method
 '  Cells(1, 1).Value = "All Stocks (" + yearvalue + ")"
 '  Cells(3, 1).Value = "Ticker"
-'  Cells(3, 2).Value = "Total Daily Volume": Columns("B").AutoFit
+'  Cells(3, 2).Value = "Total Daily Volume": Columns(2).AutoFit
 '  Cells(3, 3).Value = "Return"
   
   Dim id As Integer, i As Integer, rowEnd As Integer, colEnd As Integer
@@ -193,22 +194,22 @@ Sub AllStocksAnalysis()
   MsgBox "This code ran in " & (endSS - startSS) & " seconds for the year " & yearvalue
 End Sub
 Sub DQAnalysis()
-  Application.ScreenUpdating = False
-  Worksheets("DQ Analysis").Activate
-'  Range(Cells(1, 1), Cells(3, 3)).Clear
-'Create a header row
-  Cells(1, 1).Value = "DAQO (Ticker: DQ)"
-  Cells(3, 1).Value = "Year"
-  Cells(3, 2).Value = "Total Daily Volume": Columns("B").AutoFit
-  Cells(3, 3).Value = "Return"
-  Cells(3, 4).Value = "Starting Price"
-  Cells(3, 5).Value = "Ending Price"
-  Worksheets("2018").Activate
+  appOff
   Dim i As Integer, rowEnd As Integer, colEnd As Integer
   Dim startingPrice As Double, endingPrice As Double
   Dim totalVolume As Long: totalVolume = 0 'reset totalVolume
   'establish the number of rows to loop over
   Dim rowStart As Integer: rowStart = 2
+  Worksheets("DQ Analysis").Activate
+'  Range(Cells(1, 1), Cells(3, 3)).Clear
+'Create a header row
+  Cells(1, 1).Value = "DAQO (Ticker: DQ)"
+  Cells(3, 1).Value = "Year"
+  Cells(3, 2).Value = "Total Daily Volume": Columns(2).AutoFit
+  Cells(3, 3).Value = "Return"
+  Cells(3, 4).Value = "Starting Price"
+  Cells(3, 5).Value = "Ending Price"
+  Worksheets("2018").Activate
   rowEnd = Cells(Rows.Count, 1).End(xlUp).Row 'last non-empty row
   colEnd = Cells(1, Columns.Count).End(xlToLeft).Column 'last non-empty col
 '  rowEnd = Cells.Find("*", searchorder:=xlByRows, searchdirection:=xlPrevious).Row 'last non-empty row
@@ -230,16 +231,16 @@ Sub DQAnalysis()
   Cells(4, 3).Value = endingPrice / startingPrice - 1: Cells(4, 3).NumberFormat = "0.00%"
   Cells(4, 4).Value = startingPrice
   Cells(4, 5).Value = endingPrice
-  Range(Cells(4, 4), Cells(4, 5)).NumberFormat = "$ #.##"
+  Range(Cells(4, 4), Cells(4, 5)).NumberFormat = "$ #.#0"
   Application.ScreenUpdating = True
 End Sub
 Sub chkbrd()
   Dim newWS As Worksheet
   Const myWS As String = "chkbrd"
+  Dim myRow As Integer, myCol As Integer, myRC As String, myRCs() As String 'X * Y sizes of the checkerboard pattern
   On Error GoTo ErrHandler
   Set newWS = Sheets.Add(After:=Worksheets(Worksheets.Count)): newWS.Name = myWS 'add/rename sheet
   On Error GoTo 0
-  Dim myRow As Integer, myCol As Integer, myRC As String, myRCs() As String 'X * Y sizes of the checkerboard pattern
   myRC = InputBox("Input number as ROW*COLUMN, for example 2*8, 8*8, or anything like X*Y:", "Checkerboard Maker", "16*16")
   If myRC = vbNullString Then 'Exit module when users press Cancel button
     Exit Sub
@@ -308,7 +309,6 @@ ErrHandler:
   Resume Next
 End Sub
 Sub appOff()
-'Reference: https://eident.co.uk/2016/03/top-ten-tips-to-speed-up-your-vba-code/
   Application.ScreenUpdating = False
   Application.Calculation = xlCalculationManual
   Application.EnableEvents = False
@@ -322,6 +322,7 @@ Sub appOn()
 End Sub
 'Functions
 Private Function makechkbrd(myRow As Integer, myCol As Integer, Optional color1 As String = vbBlack, Optional color2 As String = vbWhite)
+  Dim myRC As Range
   If myRow > 64 Or myCol > 64 Then 'max size is 64x64
     Exit Function
   Else
@@ -333,20 +334,19 @@ Private Function makechkbrd(myRow As Integer, myCol As Integer, Optional color1 
     End If
   End If
   'recycle the smallest unit of checkerboard patterns
-  Dim myRC As Range
   Set myRC = Application.Union(Cells(1, 1), Cells(2, 2)): myRC.Interior.Color = color1
   Set myRC = Application.Union(Cells(1, 2), Cells(2, 1)): myRC.Interior.Color = color2
   ActiveSheet.Range("A1:B2").Copy ActiveSheet.Range(Cells(1, 1), Cells(myRow, myCol))
 End Function
 Private Function formatAllStocksAnalysisTable(Optional myWS As String = "All Stocks Analysis")
+  Dim i As Integer, rowStart As Integer, rowEnd As Integer
   Worksheets(myWS).Activate
   Cells(1, 1).Font.Bold = True
   With Range(Cells(3, 1), Cells(3, 3))
     .Font.Bold = True: .Borders(xlEdgeBottom).LineStyle = xlContinuous
   End With
-  Range(Cells(4, 2), Cells(15, 2)).NumberFormat = "#,##0"
+  Range(Cells(4, 2), Cells(15, 2)).NumberFormat = "#,##0": Columns(2).AutoFit
   Range(Cells(4, 3), Cells(15, 3)).NumberFormat = "0.0%"
-  Dim i As Integer, rowStart As Integer, rowEnd As Integer
   rowStart = 4
   rowEnd = Cells(Rows.Count, 1).End(xlUp).Row
   For i = rowStart To rowEnd
@@ -360,14 +360,14 @@ Private Function formatAllStocksAnalysisTable(Optional myWS As String = "All Sto
   Next i
 End Function
 Private Function formatAllStocksAnalysisTableBetter(Optional myWS As String = "All Stocks Analysis")
+  Dim i As Integer, rowStart As Integer, rowEnd As Integer
   Worksheets(myWS).Activate
   'Formatting
   Cells(1, 1).Font.FontStyle = "Bold"
   Range("A3:C3").Font.FontStyle = "Bold"
   Range("A3:C3").Borders(xlEdgeBottom).LineStyle = xlContinuous
-  Range("B4:B15").NumberFormat = "#,##0"
+  Range("B4:B15").NumberFormat = "#,##0": Columns(2).AutoFit
   Range("C4:C15").NumberFormat = "0.0%"
-  Dim i As Integer, rowStart As Integer, rowEnd As Integer
   rowStart = 4
   rowEnd = Cells(Rows.Count, 1).End(xlUp).Row 'last non-empty row
   For i = rowStart To rowEnd
