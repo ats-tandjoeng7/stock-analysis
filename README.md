@@ -34,7 +34,7 @@ main branch
 Our goals are to understand the concepts of code refactoring, compare the runtime performance before vs after refactoring, including two required snapshots, and share a summary report in a GitHub repository (repo) while uncovering various techniques, advantages and disadvantages of code refactoring.
 
 ## Analysis of Code Refactoring
-During this analysis, we applied various VBA coding techniques, for example looping through each member of arrays by `For` ~ `Next`, `Do` ~ `Loop`, etc. and optimizing the use of built-in VBA functions and debugging tool. This analysis was done by using a 32-bit Excel version 2206 or newer, and runtime performance before vs after code refactoring was measured on PCs with Intel 6^th^-gen i5/i7 and 11^th^-gen i7 quad cores inside. After hitting the wall at around 0.15234 seconds, breaking our initial design patterns and pseudocode was the only hope to brainstorm other possible optimization approaches against the norm.
+During this analysis, we applied various VBA coding techniques, for example looping through each member of arrays by For...Next, Do...Loop, etc. and optimizing the use of built-in VBA functions and debugging tool. This analysis was done by using a 32-bit Excel version 2206 or newer, and runtime performance before vs after code refactoring was measured on PCs with Intel 6<sup>th</sup>-gen i5/i7 and 11<sup>th</sup>-gen i7 quad cores inside. After hitting the wall at around 0.15234 seconds, breaking our initial design patterns and pseudocode was the only hope to brainstorm other possible optimization approaches against the norm.
 
 Code refactoring sometimes requires redesigning design patterns and pseudocode, and consistent accumulation of tiny improvements throughout the process, which could be time-consuming in certain cases. Besides optimizing the use of `Cells()` instead of `Range()`, numeric indexes instead quoted string indexes (as in `Columns(2)` instead of `Columns("B")`) wherever possible in our refactored code, several revisions that further optimized our original design patterns and pseudocode are highlighted below.
 
@@ -43,7 +43,7 @@ Code refactoring sometimes requires redesigning design patterns and pseudocode, 
 tickers = Split("AY,CSIQ,DQ,ENPH,FSLR,HASI,JKS,RUN,SEDG,SPWR,TERP,VSLR", ",")
 ```
 
-💡 Discounted the 1^st^ loop of tickers(1^st^ tickerIndex) and the last loop of tickers(last tickerIndex) with a single line of code, which let us reduce two loops and several lines in the most tedious `For` ~ `Next` loop. Using `Debug.Print` confirmed that `Dim` initializes each empty value to empty or 0 before we use it, which suggested that "2a) Create a for loop to initialize the tickerVolumes to zero." step was redundant and unnecessary.
+💡 Discounted the 1<sup>st</sup> loop of tickers(1<sup>st</sup> tickerIndex) and the last loop of tickers(last tickerIndex) with a single line of code, which let us reduce two loops and several lines in the most tedious For...Next loop. Using `Debug.Print` confirmed that `Dim` initializes each empty value to empty or 0 before we use it, which suggested that "2a) Create a for loop to initialize the tickerVolumes to zero." step was redundant and unnecessary.
 ```
 If Cells(rowStart, 1) = tickers(LBound(tickers)) Then
   tickerStartingPrices(LBound(tickers)) = Cells(rowStart, 6): tickerVolumes(LBound(tickers)) = Cells(rowStart, 8)
@@ -55,7 +55,7 @@ If Cells(rowEnd, 1) = tickers(UBound(tickers)) Then
 End If
 ```
 
-💡 Verified `For` ~ `Next` versus `Do` ~ `Loop` or `While` ~ `Wend` loops and used nested `If` ~ `ElseIF` ~ `End If` alternatives to accurately replicate several consecutive `If` ~ `End If` conditions. We later compared their runtime performance after over 200 test runs, even though we were discouraged.
+💡 Verified For...Next versus Do...Loop loops and used nested `If` ~ `ElseIF` ~ `End If` alternatives to accurately replicate several consecutive `If` ~ `End If` conditions. We later compared their runtime performance after over 200 test runs, even though we were discouraged.
 ```
 Do While tickerIndex <= UBound(tickers)
   For i = 3 To (rowEnd - 1)
@@ -92,13 +92,13 @@ End Sub
 ```
 
 ## Runtime Performance Analysis
-Runtime performance before vs after code refactoring was measured by running at least 50 consecutive test runs on PCs with Intel 6^th^-gen i5-6500/i7-6700HQ and later on PC with 11^th^-gen i7-1185G7 quad cores inside. The code was modified to log runtime results in csv format that we could use to identify runtime performance gain per each refactoring approach. Our results confirmed significant runtime improvements thanks to our refactored approaches and also helped us reveal a few interesting findings as shown in the following snapshots and summary table.
+Runtime performance before vs after code refactoring was measured by running at least 50 consecutive test runs on PCs with Intel 6<sup>th</sup>-gen i5-6500/i7-6700HQ and later on PC with 11<sup>th</sup>-gen i7-1185G7 quad cores inside. The code was modified to log runtime results in csv format that we could use to identify runtime performance gain per each refactoring approach. Our results confirmed significant runtime improvements thanks to our refactored approaches and also helped us reveal a few interesting findings as shown in the following snapshots and summary table.
 
 ### Results
 Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds. This performance was enabled by our refactored code after accumulating some approaches discussed in [Analysis of Code Refactoring](#analysis-of-code-refactoring) for the year 2018 and 2017 green energy stock data, respectively. Our refactored VBA code accumulated about 46-50% on average of the better overall runtime performance, while turning off those four Application properties helped to speed up about 17% of runtime performance. In summary, we revealed that
-- our refactored VBA code significantly sped up our analysis time by about 64% on average when running on recent Intel 11^th^-gen i7-1185G7 computer and by about 67% on average when running on Intel 6^th^-gen i5-6500 or i7-6700HQ computers. This suggested that code refactoring helped better on lower computer specs, though recent computer specs seemed to provide extra runtime reduction of 0.06939 seconds, meaning we could boost another 42% of runtime performance by switching to better computer specs (see **Table I**). Another option would be switching to 64-bit softwares.
+- our refactored VBA code significantly sped up our analysis time by about 64% on average when running on recent Intel 11<sup>th</sup>-gen i7-1185G7 computer and by about 67% on average when running on Intel 6<sup>th</sup>-gen i5-6500 or i7-6700HQ computers. This suggested that code refactoring helped better on lower computer specs, though recent computer specs seemed to provide extra runtime reduction of 0.06939 seconds, meaning we could boost another 42% of runtime performance by switching to better computer specs (see **Table I**). Another option would be switching to 64-bit softwares.
 - Turning off four built-in Excel Application properties shortened runtime by about 26-27% compared to keeping the default settings on for those four Application properties.
-- The advantage of using `Do`~`Loop` instead of `For`~`Next` was negligible (only about 1% better), but runtime measurements based on over 200 test runs confirmed that `Do`~`Loop` was not a taboo alternative.
+- The advantage of using Do...Loop instead of For...Next was negligible (only about 1% better), but runtime measurements based on over 200 test runs confirmed that Do...Loop was not a taboo alternative.
 
 ![Fig. 1](./02_wall-street/resources/VBA_Challenge_2017.png "Fig. 1 VBA runtime performance for the year 2017")
 
@@ -111,8 +111,8 @@ Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds. This 
 | :---	                          |    ---:                  |   ---: |    ---:                  |   ---: |
 | Refactoring                     | -0.16663                 | 64.27% | -0.33248                 | 67.23% |
 | Refactoring (turned off 4 apps) | -0.03495	               | 27.39% | -0.05676                 | 25.94% |
-| Refactoring (`Do`~`Loop` not `For`~`Next`) | -0.00087	     |  0.93% | N/A                      | N/A    |
-| By improved computer specs      | -0.06939                 | 42.82% |(11^th-gen topped 6^th-gen)| N/A   |
+| Refactoring (Do...Loop not For...Next) | -0.00087	     |  0.93% | N/A                      | N/A    |
+| By improved computer specs      | -0.06939                 | 42.82% |(11<sup>th</sup>-gen topped 6<sup>th</sup>-gen)| N/A   |
 
 ![Fig. 3](./02_wall-street/resources/VBA_Runtime_Performance_Analysis.png "Fig. 3 VBA runtime performance analysis and visualization")
 
