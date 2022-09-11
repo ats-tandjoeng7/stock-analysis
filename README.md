@@ -57,6 +57,7 @@ End If
 
 💡 Verified For...Next versus Do...Loop loops and used nested `If` ~ `ElseIF` ~ `End If` alternatives to accurately replicate several consecutive `If` ~ `End If` conditions. We later compared their runtime performance after over 200 test runs, even though we were discouraged.
 ```
+tickerIndex = 0
 Do While tickerIndex <= UBound(tickers)
   For i = 3 To (rowEnd - 1)
     If Cells(i, 1) = tickers(tickerIndex) Then

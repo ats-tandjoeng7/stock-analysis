@@ -53,7 +53,7 @@ nextI:
     tickerEndingPrices(UBound(tickers)) = Cells(rowEnd, 6): tickerVolumes(UBound(tickers)) = tickerVolumes(UBound(tickers)) + Cells(rowEnd, 8)
   End If
   'Output results to a table and format it
-  Worksheets("All Stocks Analysis").Activate: tickerIndex = 0
+  Worksheets("All Stocks Analysis").Activate
   For tickerIndex = 0 To UBound(tickers)
     Cells(4 + tickerIndex, 1) = tickers(tickerIndex): Cells(4 + tickerIndex, 2) = tickerVolumes(tickerIndex)
     Cells(4 + tickerIndex, 3) = (tickerEndingPrices(tickerIndex) / tickerStartingPrices(tickerIndex)) - 1
@@ -92,6 +92,7 @@ Sub AllStocksAnalysisRefactoredNoComment()
   If Cells(2, 1) = tickers(0) Then
     tickerStartingPrices(0) = Cells(2, 6): tickerVolumes(0) = Cells(2, 8)
   End If
+  tickerIndex = 0
   Do While tickerIndex <= UBound(tickers)
     For i = 3 To (rowEnd - 1)
       If Cells(i, 1) = tickers(tickerIndex) Then
