@@ -46,12 +46,14 @@ tickers = Split("AY,CSIQ,DQ,ENPH,FSLR,HASI,JKS,RUN,SEDG,SPWR,TERP,VSLR", ",")
 💡 Discounted the 1<sup>st</sup> loop of tickers(1<sup>st</sup> tickerIndex) and the last loop of tickers(last tickerIndex) with a single line of code, which let us reduce two loops and several lines in the most tedious For...Next loop. Using `Debug.Print` confirmed that `Dim` initializes each empty value to empty or 0 before we use it, which suggested that "2a) Create a for loop to initialize the tickerVolumes to zero." step was redundant.
 ```
 If Cells(rowStart, 1) = tickers(LBound(tickers)) Then
-  tickerStartingPrices(LBound(tickers)) = Cells(rowStart, 6): tickerVolumes(LBound(tickers)) = Cells(rowStart, 8)
+  tickerStartingPrices(LBound(tickers)) = Cells(rowStart, 6)
+  tickerVolumes(LBound(tickers)) = Cells(rowStart, 8)
 End If
 ```
 ```
 If Cells(rowEnd, 1) = tickers(UBound(tickers)) Then
-  tickerEndingPrices(UBound(tickers)) = Cells(rowEnd, 6): tickerVolumes(UBound(tickers)) = tickerVolumes(UBound(tickers)) + Cells(rowEnd, 8)
+  tickerEndingPrices(UBound(tickers)) = Cells(rowEnd, 6)
+  tickerVolumes(UBound(tickers)) = tickerVolumes(UBound(tickers)) + Cells(rowEnd, 8)
 End If
 ```
 
