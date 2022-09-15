@@ -46,14 +46,12 @@ tickers = Split("AY,CSIQ,DQ,ENPH,FSLR,HASI,JKS,RUN,SEDG,SPWR,TERP,VSLR", ",")
 💡 Discounted the 1<sup>st</sup> loop of tickers(1<sup>st</sup> tickerIndex) and the last loop of tickers(last tickerIndex) with a single line of code, which let us reduce two loops and several lines in the most tedious For...Next loop. Using `Debug.Print` confirmed that `Dim` initializes each empty value to empty or 0 before we use it, which suggested that "2a) Create a for loop to initialize the tickerVolumes to zero." step was redundant.
 ```
 If Cells(rowStart, 1) = tickers(LBound(tickers)) Then
-  tickerStartingPrices(LBound(tickers)) = Cells(rowStart, 6)
-  tickerVolumes(LBound(tickers)) = Cells(rowStart, 8)
+  tickerStartingPrices(LBound(tickers)) = Cells(rowStart, 6): tickerVolumes(LBound(tickers)) = Cells(rowStart, 8)
 End If
 ```
 ```
 If Cells(rowEnd, 1) = tickers(UBound(tickers)) Then
-  tickerEndingPrices(UBound(tickers)) = Cells(rowEnd, 6)
-  tickerVolumes(UBound(tickers)) = tickerVolumes(UBound(tickers)) + Cells(rowEnd, 8)
+  tickerEndingPrices(UBound(tickers)) = Cells(rowEnd, 6): tickerVolumes(UBound(tickers)) = tickerVolumes(UBound(tickers)) + Cells(rowEnd, 8)
 End If
 ```
 
@@ -103,9 +101,11 @@ Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds, which
 - Turning off four built-in Excel Application properties alone shortened runtime by about 26-27% compared to keeping the default settings on for those four Application properties.
 - The advantage of using Do...Loop instead of For...Next was negligible (only about 1% better), but runtime measurements based on over 200 test runs confirmed that Do...Loop was not a taboo alternative.
 
-![Fig. 1](./02_wall-street/resources/VBA_Challenge_2017.png "Fig. 1 VBA runtime performance for the year 2017")
+![Fig. 1](./02_wall-street/resources/VBA_Challenge_2017.png "Fig. 1 VBA runtime performance for the year 2017")\
+**Fig. 1 VBA runtime performance for the year 2017**
 
-![Fig. 2](./02_wall-street/resources/VBA_Challenge_2018.png "Fig. 2 VBA runtime performance for the year 2018")
+![Fig. 2](./02_wall-street/resources/VBA_Challenge_2018.png "Fig. 2 VBA runtime performance for the year 2018")\
+**Fig. 2 VBA runtime performance for the year 2018**
 
 **Table I** and Fig. 3 provide the visualization of the overall runtime performance comparison. We assumed that 32-bit softwares, like our current Excel VBA, would only be affected slightly by computer specs, but our results revealed that better computer specs also played a significant role in boosting the overal performance of code refactoring and could further our efficiency and ease certain challenges during the code refactoring process. Being unaware of this limitation was a big mistake when trying to beat the record runtime, which triggered additional experiments and redoing the code refactoring. However, this project has taught us a lot of lessons, and conducting additional researches and measurements are often required to solve problems, even when our initial results turned out to be slightly off.
 
@@ -117,7 +117,8 @@ Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds, which
 | Refactoring (Do...Loop not For...Next) | -0.00087	         |  0.93% | N/A                      | N/A    |
 | Improved computer specs         | -0.06939                 | 42.82% |(11<sup>th</sup>-gen topped 6<sup>th</sup>-gen)| N/A |
 
-![Fig. 3](./02_wall-street/resources/VBA_Runtime_Performance_Analysis.png "Fig. 3 VBA runtime performance analysis and visualization")
+![Fig. 3](./02_wall-street/resources/VBA_Runtime_Performance_Analysis.png "Fig. 3 VBA runtime performance analysis and visualization")\
+**Fig. 3 VBA runtime performance analysis and visualization**
 
 ## Summary
 Refactoring code provides some advantages and disanvantages. In general, when code refactoring is done correctly, it could improve efficiency for delivering the same quality of outputs, readability, reusability and possibly maintainability of the source code, especially when working with more complex software projects. However, refactoring code can also trigger time-consuming tasks and require extra resources because refactoring process normally requires in-depth knowhow and experience with not only coding but also hardware and system refactoring.
