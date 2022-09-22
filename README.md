@@ -31,7 +31,7 @@ main branch
     &emsp; |&rarr; [./02_wall-street/resources/VBA_Runtime_Performance_Analysis.png](./02_wall-street/resources/VBA_Runtime_Performance_Analysis.png)  
 
 ### Purpose
-Our goals are to understand the concepts of code refactoring, compare the runtime performance before vs after refactoring, including two required snapshots, and share a summary report in a GitHub repository (repo) while uncovering various techniques, advantages and disadvantages of code refactoring.
+Our goals are to understand the concepts of code refactoring, compare the runtime performance before vs after refactoring, including two required snapshots, and share a summary report in a GitHub repository (repo) while uncovering various techniques, advantages, and disadvantages of code refactoring.
 
 ## Analysis of Code Refactoring
 During this analysis, we applied various VBA coding techniques, for example looping through each member of arrays by For...Next, Do...Loop, etc. and optimizing the use of built-in VBA functions and debugging tool. This analysis was done by using a 32-bit Excel version 2206 or newer, and runtime performance before vs after code refactoring was measured on PCs with Intel 6<sup>th</sup>-gen i5/i7 and 11<sup>th</sup>-gen i7 quad cores inside. After hitting the wall at around 0.15234 seconds, breaking our initial design patterns and pseudocode was the only hope to brainstorm other possible optimization approaches against the norm.
@@ -97,7 +97,7 @@ Runtime performance before vs after code refactoring was measured by running at 
 
 ### Results
 Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds, which was achieved by our refactored code after accumulating some approaches discussed in [Analysis of Code Refactoring](#analysis-of-code-refactoring) for the year 2018 and 2017 green energy stock data, respectively. Our refactored VBA code accumulated about 46-50% on average of the better overall runtime performance, while turning off those four Application properties contributed about 17% of the overall runtime performance improvement. In summary, we revealed that
-- our refactored VBA code significantly sped up our analysis time by about 64% on average when running on recent Intel 11<sup>th</sup>-gen i7-1185G7 computer and by about 67% on average when running on Intel 6<sup>th</sup>-gen i5-6500 or i7-6700HQ computers. This suggested that code refactoring helped better on lower computer specs, though recent computer specs seemed to provide extra runtime reduction of 0.06939 seconds, meaning that we could boost another 42% of runtime performance by switching to better computer specs (see **Table I**). Another option would be switching to 64-bit softwares.
+- our refactored VBA code significantly sped up our analysis time by about 64% on average when running on recent Intel 11<sup>th</sup>-gen i7-1185G7 computer and by about 67% on average when running on Intel 6<sup>th</sup>-gen i5-6500 or i7-6700HQ computers. This suggested that code refactoring helped better on lower computer specs, though recent computer specs seemed to provide extra runtime reduction of 0.06939 seconds, meaning that we could boost another 42% of runtime performance by switching to better computer specs (see **Table 1**). Another option would be switching to 64-bit software.
 - Turning off four built-in Excel Application properties alone shortened runtime by about 26-27% compared to keeping the default settings on for those four Application properties.
 - The advantage of using Do...Loop instead of For...Next was negligible (only about 1% better), but runtime measurements based on over 200 test runs confirmed that Do...Loop was not a taboo alternative.
 
@@ -107,9 +107,9 @@ Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds, which
 ![Fig. 2](./02_wall-street/resources/VBA_Challenge_2018.png "Fig. 2 VBA runtime performance for the year 2018")\
 **Fig. 2 VBA runtime performance for the year 2018**
 
-**Table I** and Fig. 3 provide the visualization of the overall runtime performance comparison. We assumed that 32-bit softwares, like our current Excel VBA, would only be affected slightly by computer specs, but our results revealed that better computer specs also played a significant role in boosting the overal performance of code refactoring and could further our efficiency and ease certain challenges during the code refactoring process. Being unaware of this limitation was a big mistake when trying to beat the record runtime, which triggered additional experiments and redoing the code refactoring. However, this project has taught us a lot of lessons, and conducting additional researches and measurements are often required to solve problems, even when our initial results turned out to be slightly off.
+**Table 1** and Fig. 3 provide the visualization of the overall runtime performance comparison. We assumed that 32-bit software, like our current Excel VBA, would only be affected slightly by computer specs, but our results revealed that better computer specs also played a significant role in boosting the overall performance of code refactoring and could further our efficiency and ease certain challenges during the code refactoring process. Being unaware of this limitation was a big mistake when trying to beat the record runtime, which triggered additional experiments and redoing the code refactoring. However, this project has taught us a lot of lessons, and conducting additional researches and measurements are often required to solve problems, even when our initial results turned out to be slightly off.
 
-**Table I: Runtime Performance Improvement by Code Refactoring**  
+**Table 1. Runtime Performance Improvement by Code Refactoring**  
 | Contribution by                 | i7-1185G7 4c/8lp [secs]  | [%]    | i5-6500 4c/4lp [secs]    | [%]    |
 | :---	                          |    ---:                  |   ---: |    ---:                  |   ---: |
 | Refactoring                     | -0.16663                 | 64.27% | -0.33248                 | 67.23% |
@@ -121,7 +121,7 @@ Fig. 1-2 show the fastest runtime performance of 0.07422~0.078125 seconds, which
 **Fig. 3 VBA runtime performance analysis and visualization**
 
 ## Summary
-Refactoring code provides some advantages and disanvantages. In general, when code refactoring is done correctly, it could improve efficiency for delivering the same quality of outputs, readability, reusability and possibly maintainability of the source code, especially when working with more complex software projects. However, refactoring code can also trigger time-consuming tasks and require extra resources because refactoring process normally requires in-depth knowhow and experience with not only coding but also hardware and system refactoring.
+Refactoring code provides some advantages and disadvantages. In general, when code refactoring is done correctly, it could improve efficiency for delivering the same quality of outputs, readability, reusability and possibly maintainability of the source code, especially when working with more complex software projects. However, refactoring code can also trigger time-consuming tasks and require extra resources because refactoring process normally requires in-depth knowhow and experience with not only coding but also hardware and system refactoring.
 
 And, here are my key takeaways and summary on the advantages and disadvantages of the original and refactored VBA script.
 
