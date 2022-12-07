@@ -171,3 +171,4 @@ And, here are my key takeaways and summary on the advantages and disadvantages o
 [About code refactoring](https://en.wikipedia.org/wiki/Code_refactoring)  
 [Top Ten Tips To Speed Up Your VBA Code](https://eident.co.uk/2016/03/top-ten-tips-to-speed-up-your-vba-code/)  
 [Data type summary](https://docs.microsoft.com/en-us/office/vba/language/reference/user-interface-help/data-type-summary)  
+[emoji-cheat-sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md)  
